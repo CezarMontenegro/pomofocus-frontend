@@ -1,9 +1,10 @@
 import { useState, useEffect } from 'react';
+import styles from './Pomodoro.module.css'
 
 
 function Pomodoro() {
   const [seconds, setSeconds] = useState(0);
-  const [minutes, setMinutes] = useState(59);
+  const [minutes, setMinutes] = useState(0);
   const [hours, setHours] = useState(0);
   const [timerActive, setTimerActive] = useState(false);
 
@@ -41,17 +42,19 @@ function Pomodoro() {
 
 
   return (
-    <div className="container">
-      <div class="pomodoro-timer">
-        <h2>Cronômetro Pomodoro</h2>
-        <div class="timer">
-            <span>{ hours }</span><span>:</span><span>{ minutes }</span><span>:</span><span>{ seconds }</span>
+    <div className={styles.container}>
+      <div className={buttons_container}>
+        <button className={styles.button}>Pomodoro</button>
+        <button className={styles.button}>Short Break</button>
+        <button className={styles.button}>Long Break</button>
+      </div>
+        <div className={styles.timer}>
+          <span>{ hours }</span><span>:</span><span>{ minutes }</span><span>:</span><span>{ seconds }</span>
         </div>
-        <div class="controls">
-            <button id="start/pause" onClick={playStopToogle}>Iniciar</button>
-            <button id="pause">Pausar</button>
-        </div>
-    </div>
+        <div className="controls">
+          <button id="start/pause" onClick={playStopToogle}>Iniciar</button>
+          <button id="pause">Pausar</button>
+      </div>
     </div>
   )
 }
