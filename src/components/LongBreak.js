@@ -1,10 +1,10 @@
 import { useState, useEffect } from 'react';
-import styles from './Pomodoro.module.css'
+import styles from './LongBreak.module.css'
 
 
-function Pomodoro(props) {
+function LongBreak() {
   const [seconds, setSeconds] = useState(0);
-  const [minutes, setMinutes] = useState(25);
+  const [minutes, setMinutes] = useState(30);
   const [timerActive, setTimerActive] = useState(false);
 
   //This is a switch to set when the timer is running or not
@@ -52,5 +52,5 @@ function Pomodoro(props) {
   )
 }
 
-export default Pomodoro;
+export default LongBreak;
 

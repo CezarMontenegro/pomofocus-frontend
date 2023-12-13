@@ -1,10 +1,18 @@
-import styles from './App.module.css'
-import Pomodoro from "./components/Pomodoro";
+import { useState } from 'react';
+
+const timerList = {
+  pomodoro: "pomodoro",
+  shortBreak: "shortBreak",
+  longBreak: "longBreak"
+}
 
 function App() {
+  const [timerOption, setTimerOption] = useState(timerList.pomodoro);
+
   return (
-    <div class={styles.app_container}>
-      <Pomodoro />
+    <div>
+    {console.log(timerOption.pomodoro)}
+    Oi
     </div>
   );
 }

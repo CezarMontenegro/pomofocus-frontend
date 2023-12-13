@@ -5,3 +5,15 @@
   width: 100vw;
   position: relative;
 }
+
+.pomodoro {
+  background-color: rgb(186, 73, 73);
+}
+
+.shortBreak {
+  background-color: rgb(56, 133, 138);
+}
+
+.longBreak {
+  background-color: rgb(57, 112, 151);
+}
