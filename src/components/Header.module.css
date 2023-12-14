@@ -1,0 +1,35 @@
+.header {
+  position: absolute;
+  top: 1%;
+  left: calc(50% - 300px);
+  width: 600px;
+  height: 50px;
+  line-height: 50px;
+  border-bottom: 1px solid white;
+}
+
+.logo {
+  display: inline-block;
+  color: #fff;
+  font-size: 22px;
+  font-weight: bold;
+}
+
+.header_controls {
+  display: inline-block;
+  float: right;
+}
+
+.header_controls button {
+  border: none;
+  margin: 0px;
+  margin-right: 10px;
+  border-radius: 4px;
+  font-size: 16px;
+  padding: 2px 12px;
+  height: 28px;
+  cursor: pointer;
+  background: none;
+  color: white;
+  background-color: rgba(255, 255, 255, .1);
+}
