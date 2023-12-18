@@ -25,11 +25,11 @@ function App() {
 
   return (
     <div>
-    {timer === pomodoro && <Pomodoro setTimerOption={setTimerOption} setIntervals={setIntervals} pomodoroIntervals={pomodoroIntervals}/>}
-    {timer === shortBreak && <ShortBreak setTimerOption={setTimerOption} setIntervals={setIntervals} pomodoroIntervals={pomodoroIntervals}/>}
-    {timer === longBreak && <LongBreak setTimerOption={setTimerOption} setIntervals={setIntervals} pomodoroIntervals={pomodoroIntervals}/>}
+      {timer === pomodoro && <Pomodoro setTimerOption={setTimerOption} setIntervals={setIntervals} pomodoroIntervals={pomodoroIntervals}/>}
+      {timer === shortBreak && <ShortBreak setTimerOption={setTimerOption} setIntervals={setIntervals} pomodoroIntervals={pomodoroIntervals}/>}
+      {timer === longBreak && <LongBreak setTimerOption={setTimerOption} setIntervals={setIntervals} pomodoroIntervals={pomodoroIntervals}/>}
     </div>
   );
-}
+}                                                                                               
 
 export default App;

@@ -1,12 +1,14 @@
+@keyframes background-transition {
+  from {background-color: rgb(53, 109, 109)}
+  to {background-color: rgb(186, 73, 73)}
+}
+
 .container {
   background-color: rgb(186, 73, 73);
   height: 100vh;
   width: 100vw;
-  transition: 3s;
-}
-
-.container:view-transition {
-  background-color: black;
+  animation-name: background-transition;
+  animation-duration: .5s;
 }
 
 .timer_container {
@@ -40,7 +42,7 @@
 }
 
 .timer_header .selected {
-  background: none rgba(0,0,0,0.15);
+  background: rgba(0,0,0,0.15);
   font-weight: bold;
 }
 
@@ -52,7 +54,7 @@
 }
 
 .controls {
-  position: relative;
+  /* position: relative; */
 }
 
 .controls button{
@@ -96,6 +98,20 @@
 .interval_container h3 {
   font-size: 22px;
   font-weight: 400;
+}
+
+.container.true {
+  background-color: rgb(110, 40, 40);
+}
+
+.settings_container{
+  width: 400px;
+  height: 400px;
+  background-color: rgb(242, 242, 242);
+  border-radius: 10px;
+  position: absolute;
+  left: calc(50% - 200px);
+  top: 11%;
 }
 
 

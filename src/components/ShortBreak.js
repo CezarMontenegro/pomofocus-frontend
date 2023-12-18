@@ -1,11 +1,13 @@
 import { useState, useEffect } from 'react';
 import styles from './ShortBreak.module.css';
 import Header from './Header.js';
+import Settings from './Settings.js';
 
 function ShortBreak({ setTimerOption, setIntervals, pomodoroIntervals }) {
   const [seconds, setSeconds] = useState(1);
   const [minutes, setMinutes] = useState(0);
   const [timerActive, setTimerActive] = useState(false);
+  const [openSettings, setOpenSettings] = useState(false);
 
   //This is a switch to set when the timer is running or not
   function playStopTimer() {
@@ -21,7 +23,7 @@ function ShortBreak({ setTimerOption, setIntervals, pomodoroIntervals }) {
         setMinutes((prevMinutes) => prevMinutes - 1)
       }
 
-      if (minutes == 0 & seconds < 0) {
+      if (minutes === 0 & seconds < 0) {
         setTimerActive((current) => !current);
         setIntervals();
         setTimerOption("pomodoro");
@@ -31,19 +33,19 @@ function ShortBreak({ setTimerOption, setIntervals, pomodoroIntervals }) {
         setSeconds((prevSegundos) => prevSegundos - 1);
       }, 1000);
     
-      
-    
     return () => {
       clearInterval(intervalId);
     };
   }
-  }, [timerActive, seconds, minutes]);  
-
-
+  }, [timerActive, seconds, minutes]);
+  
+  function handleSettings() {
+    setOpenSettings((current) => !current);
+  }
 
   return (
-    <div className={styles.container}>
-      <Header />
+    <div className={`${styles.container} ${styles[openSettings]}`}>
+    <Header handleSettings={handleSettings}/>
       <div className={styles.timer_container}>
         <div className={styles.timer_header}>
           <button
@@ -75,6 +77,7 @@ function ShortBreak({ setTimerOption, setIntervals, pomodoroIntervals }) {
         <h4>#{pomodoroIntervals}</h4>
         <h3>Time for a small break!</h3>
       </div>
+      {openSettings && <Settings />}
     </div>
   )
 }

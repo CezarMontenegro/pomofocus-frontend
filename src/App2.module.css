@@ -1,14 +1,21 @@
-@keyframes background-transition {
-  from {background-color: rgb(53, 109, 109)}
-  to {background-color: rgb(56, 133, 138)}
-}
-
 .container {
-  background-color: rgb(56, 133, 138);
   height: 100vh;
   width: 100vw;
-  animation-name: background-transition;
-  animation-duration: .5s;
+}
+
+.container.pomodoro {
+  background-color: rgb(186, 73, 73);
+  transition: background-color 1s ease;
+}
+
+.container.shortBreak {
+  background-color: rgb(56, 133, 138);
+  transition: background-color 1s ease;
+}
+
+.container.longBreak {
+  background-color: rgb(57, 112, 151);
+  transition: background-color 1s ease;
 }
 
 .timer_container {
@@ -40,6 +47,11 @@
   background: none;
   color: white;
 }
+
+.timer_header .button:active {
+  transform: translateY(2px);
+}
+
 .timer_header .selected {
   background: none rgba(0,0,0,0.15);
   font-weight: bold;
@@ -52,11 +64,7 @@
   font-weight: bold;
 }
 
-.controls {
-  position: relative;
-}
-
-.controls button{
+.controls button {
   cursor: pointer;
   border: none;
   margin: 20px 0px 0px;
@@ -65,11 +73,35 @@
   box-shadow: rgb(235, 235, 235) 0px 6px 0px;
   font-size: 26px;
   height: 55px;
-  color: rgb(56, 133, 138);
   font-weight: bold;
   width: 200px;
-  background-color: white;  position: absolute;
+  background-color: white;
+  position: absolute;
   left: calc(50% - 100px);
+}
+
+.controls button:active {
+  transform: translateY(2px);
+}
+
+.pomodoro .controls button {
+  color: rgb(186, 73, 73);
+  transition: color 1s ease;
+}
+
+.shortBreak .controls button {
+  color: rgb(56, 133, 138);
+  transition: color 1s ease;
+}
+
+.longBreak .controls button {
+  color: rgb(57, 112, 151);
+  transition: color 1s ease;
+}
+
+
+.controls h3 {
+  display: inline-block;
 }
 
 .interval_container {
@@ -94,9 +126,9 @@
   font-weight: 400;
 }
 
-.container.true {
-  background-color: rgb(33, 77, 80);
-}
+/* .container.true {
+  background-color: rgb(110, 40, 40);
+} */
 
 .settings_container{
   width: 400px;
@@ -107,3 +139,5 @@
   left: calc(50% - 200px);
   top: 11%;
 }
+
+

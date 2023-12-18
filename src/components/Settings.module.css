@@ -1,0 +1,16 @@
+.settings_container{
+  width: 400px;
+  height: 400px;
+  background-color: rgb(242, 242, 242);
+  border-radius: 10px;
+  color: rgb(102, 102, 102);
+  position: absolute;
+  left: calc(50% - 200px);
+  top: 11%;
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+}
+
+
+
