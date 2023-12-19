@@ -1,64 +1,77 @@
+//IMPORTS
+
 //hooks
 import { useState, useEffect } from 'react';
 
 //components
-// import Pomodoro from './components/Pomodoro';
-// import ShortBreak from './components/ShortBreak';
-// import LongBreak from './components/LongBreak';
 import Header from './components/Header';
 import Settings from './components/Settings';
 
 //styles
 import styles from './App2.module.css';
 
-const timerList = {
+const pageTypeList = {
   pomodoro: "pomodoro",
   shortBreak: "shortBreak",
   longBreak: "longBreak"
 }
 
-const {pomodoro, shortBreak, longBreak} = timerList;
+const {pomodoro, shortBreak, longBreak} = pageTypeList;
 
 function App() {
+  //states
+
   // timer states
   const [seconds, setSeconds] = useState(1);
   const [minutes, setMinutes] = useState(0);
+
   //timer start/stop
   const [timerActive, setTimerActive] = useState(false);
-  // timerOption
-  const [timer, setTimer] = useState(timerList.pomodoro);
+
+  // pageType
+  const [pageType, setPageType] = useState(pageTypeList.pomodoro);
+
+  //timerType
+  const [pomodoroDuration, setPomodoroDuration] = useState(25);
+  const [shortBreakDuration, setShortBreakDuration] = useState(5);
+  const [longBreakDuration, setLongBreakDuration] = useState(30);
+
   // intervals qty
   const [pomodoroIntervals, setPomodoroIntervals] = useState(1);
+
   //setting
-  const [openSettings, setOpenSettings] = useState(false);
+  const [isSettingsOpen, setIsSettingsOpen] = useState(false);
 
-  function setTimerOption(option) {
-    setTimer(option)
-  }
 
-  function setIntervals(option) {
-    setPomodoroIntervals((current) => current + 1);
-  }
+  //FUNCTIONS
 
-  //This is a switch to set when the timer is running or not
+  //switch to set when the timer is running or not
   function playStopTimer() {
     setTimerActive( (prevTimerActive) => !prevTimerActive);
   }
 
-  useEffect(() => {
 
+  function handleTimersDurations(pomodoro, shortBreak, longBreak) {
+    setPomodoroDuration(pomodoro);
+    setShortBreakDuration(shortBreak);
+    setLongBreakDuration(longBreak);
+    openSettings();
+  }
+
+  //timer logic
+  useEffect(() => {
     if (timerActive) {
       if (seconds < 0) {
         setSeconds(59);
         setMinutes((prevMinutes) => prevMinutes - 1);
       }
 
-      if (minutes === 0 & seconds < 0) {
+      if (minutes === 0 & seconds === 0) {
         setTimerActive((current) => !current);
         if(pomodoroIntervals % 4 === 0) {
-          setTimerOption("longBreak");
+          setPageType(longBreak);
         } else {
-          setTimerOption("shortBreak");
+          setPageType(shortBreak);
         }
       }
 
@@ -72,28 +85,29 @@ function App() {
   }
   }, [timerActive, seconds, minutes]);
 
-  function handleSettings() {
-    setOpenSettings((current) => !current);
+  function openSettings() {
+    setIsSettingsOpen((current) => !current);
   }
 
   return (
-    <div className={`${styles.container} ${styles[timer]}`}>
-      <Header handleSettings={handleSettings}/>
+    <div className={`${styles.container} ${styles[pageType]}`}>
+      {console.log(pomodoroDuration, shortBreakDuration, longBreakDuration)}
+      <Header openSettings={openSettings}/>
       <div className={styles.timer_container}>
         <div className={styles.timer_header}>
           <button
-            className={`${styles.button} ${timer === pomodoro ? styles.selected : ""}`}
-            onClick={() => setTimerOption(pomodoro)}
+            className={`${styles.button} ${pageType === pomodoro ? styles.selected : ""}`}
+            onClick={() => setPageType(pomodoro)}
             >Pomodoro
           </button>
           <button
-            className={`${styles.button} ${timer === shortBreak ? styles.selected : ""}`}
-            onClick={() => setTimerOption(shortBreak)}
+            className={`${styles.button} ${pageType === shortBreak ? styles.selected : ""}`}
+            onClick={() => setPageType(shortBreak)}
               >Short Break
           </button>
           <button
-            className={`${styles.button} ${timer === longBreak ? styles.selected : ""}`}
-            onClick={() => setTimerOption(longBreak)}
+            className={`${styles.button} ${pageType === longBreak ? styles.selected : ""}`}
+            onClick={() => setPageType(longBreak)}
             >Long Break
           </button>
         </div>
@@ -108,7 +122,14 @@ function App() {
         <h4>#{pomodoroIntervals}</h4>
         <h3>Time to focus!</h3>
       </div>
-      {openSettings && <Settings />}
+      {isSettingsOpen &&
+        <Settings
+          handleTimerDurations={handleTimersDurations}
+          pomodoroDuration={pomodoroDuration}
+          shortBreakDuration={shortBreakDuration}
+          longBreakDuration={longBreakDuration}
+        />
+      }
     </div>
   )
 }                                                                                               
