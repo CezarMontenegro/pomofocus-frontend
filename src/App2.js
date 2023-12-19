@@ -22,14 +22,14 @@ function App() {
   //states
 
   // timer states
-  const [seconds, setSeconds] = useState(1);
+  const [seconds, setSeconds] = useState(0);
   const [minutes, setMinutes] = useState(0);
 
   //timer start/stop
   const [timerActive, setTimerActive] = useState(false);
 
   // pageType
-  const [pageType, setPageType] = useState(pageTypeList.pomodoro);
+  const [pageType, setPageType] = useState(pomodoro);
 
   //timerType
   const [pomodoroDuration, setPomodoroDuration] = useState(25);
@@ -37,7 +37,8 @@ function App() {
   const [longBreakDuration, setLongBreakDuration] = useState(30);
 
   // intervals qty
-  const [pomodoroIntervals, setPomodoroIntervals] = useState(1);
+  const [pomodoroIntervalsQty, setPomodoroIntervalsQty] = useState(1);
+  const [pomodoroIntervalsToLongBreak, setPomodoroIntervalsToLongBreak] = useState(4);
 
   //setting
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
@@ -50,13 +51,21 @@ function App() {
     setTimerActive( (prevTimerActive) => !prevTimerActive);
   }
 
-
-  function handleTimersDurations(pomodoro, shortBreak, longBreak) {
+  //handles the timers durantions on settings
+  function handleTimersDurations(pomodoro, shortBreak, longBreak, pomodoroIntervals) {
     setPomodoroDuration(pomodoro);
     setShortBreakDuration(shortBreak);
     setLongBreakDuration(longBreak);
+    setPomodoroIntervalsToLongBreak(pomodoroIntervals)
     openSettings();
   }
+
+  //set the correct time on the clock
+  useEffect(() => {
+    if (pageType === pomodoro) setMinutes(pomodoroDuration);
+    if (pageType === shortBreak) setMinutes(shortBreakDuration);
+    if (pageType === longBreak) setMinutes(longBreakDuration);
+  }, [pageType, pomodoroDuration, shortBreakDuration, longBreakDuration]);
 
   //timer logic
   useEffect(() => {
@@ -66,13 +75,19 @@ function App() {
         setMinutes((prevMinutes) => prevMinutes - 1);
       }
 
-      if (minutes === 0 & seconds === 0) {
+      if (minutes === 0 && seconds === 0 && pageType === pomodoro) {
         setTimerActive((current) => !current);
-        if(pomodoroIntervals % 4 === 0) {
+        if(pomodoroIntervalsQty % pomodoroIntervalsToLongBreak === 0) {
           setPageType(longBreak);
         } else {
           setPageType(shortBreak);
         }
+      }
+
+      if (minutes === 0 && seconds === 0 && (pageType === shortBreak || pageType === longBreak)) {
+        setTimerActive((current) => !current);
+        setPageType(pomodoro);
+        setPomodoroIntervalsQty((current) => current += 1);
       }
 
       let intervalId = setInterval(() => {
@@ -85,13 +100,14 @@ function App() {
   }
   }, [timerActive, seconds, minutes]);
 
+  //handles the settings opning
   function openSettings() {
     setIsSettingsOpen((current) => !current);
   }
 
   return (
     <div className={`${styles.container} ${styles[pageType]}`}>
-      {console.log(pomodoroDuration, shortBreakDuration, longBreakDuration)}
+      {console.log(pomodoroIntervalsQty, pomodoroIntervalsToLongBreak)}
       <Header openSettings={openSettings}/>
       <div className={styles.timer_container}>
         <div className={styles.timer_header}>
@@ -119,7 +135,7 @@ function App() {
         </div>
       </div>
       <div className={styles.interval_container}>
-        <h4>#{pomodoroIntervals}</h4>
+        <h4>#{pomodoroIntervalsQty}</h4>
         <h3>Time to focus!</h3>
       </div>
       {isSettingsOpen &&
@@ -128,6 +144,7 @@ function App() {
           pomodoroDuration={pomodoroDuration}
           shortBreakDuration={shortBreakDuration}
           longBreakDuration={longBreakDuration}
+          pomodoroIntervalsToLongBreak={pomodoroIntervalsToLongBreak}
         />
       }
     </div>

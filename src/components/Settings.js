@@ -5,12 +5,14 @@ function Settings({
     handleTimerDurations,
     pomodoroDuration,
     shortBreakDuration,
-    longBreakDuration
+    longBreakDuration,
+    pomodoroIntervalsToLongBreak
   }) {
 
   const [pomodoro, setPomodoro] = useState(pomodoroDuration);
   const [shortBreak, setShortBreak] = useState(shortBreakDuration);
   const [longBreak, setLongBreak] = useState(longBreakDuration);
+  const [intervals, setIntervals] = useState(pomodoroIntervalsToLongBreak);
 
   return (
     <div className={styles.settings_container}>
@@ -24,10 +26,14 @@ function Settings({
             <span>Pomodoro</span>
             <input
               type="number"
+
               name="pomodoro"
               value={pomodoro}
               placeholder={pomodoro}
-              onChange={(e) => setPomodoro(e.target.value)}
+              onChange={(e) => {
+                const newValue = parseInt(e.target.value, 10);
+                setPomodoro(newValue < 0 ? 0 : newValue);
+              }}
             />
           </label>
           <label>
@@ -37,7 +43,10 @@ function Settings({
               name="shortBreak"
               value={shortBreak}
               placeholder={shortBreak}
-              onChange={(e) => setShortBreak(e.target.value)}
+              onChange={(e) => {
+                const newValue = parseInt(e.target.value, 10);
+                setShortBreak(newValue < 0 ? 0 : newValue);
+              }}
             />
           </label>
           <label>
@@ -47,13 +56,31 @@ function Settings({
               name="longBreak"
               value={longBreak}
               placeholder={longBreak}
-              onChange={(e) => setLongBreak(e.target.value)}
+              onChange={(e) => {
+                const newValue = parseInt(e.target.value, 10);
+                setLongBreak(newValue < 0 ? 0 : newValue);
+              }}
             />
           </label>
         </div>
       </div>
+      <div className="interval_settings">
+        <label>
+          <span>Long Break Intervals</span>
+          <input
+            type="number"
+            name="intervals"
+            value={intervals}
+            placeholder={intervals}
+            onChange={(e) => {
+              const newValue = parseInt(e.target.value, 10);
+                setIntervals(newValue < 1 ? 1 : newValue);
+            }}
+          />
+        </label>
+      </div>
       <div>
-        <button onClick={() => handleTimerDurations(pomodoro, shortBreak, longBreak)}>
+        <button onClick={() => handleTimerDurations(pomodoro, shortBreak, longBreak, intervals)}>
           Save
         </button>
       </div>
