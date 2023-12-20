@@ -56,6 +56,11 @@ function App() {
       }
     },[])
 
+
+    function handleForward() {
+      
+    }
+
   //timer logic
   useEffect(() => {
     if (isTimerActive) {

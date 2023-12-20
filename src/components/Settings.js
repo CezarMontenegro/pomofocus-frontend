@@ -15,13 +15,17 @@ function Settings({ openSettings, timerDurations, setTimerDurations }) {
       longBreak,
       intervals
     });
-    localStorage.setItem('timer_durations', JSON.stringify(timerDurations));
+    localStorage.setItem('timer_durations', JSON.stringify({
+      pomodoro,
+      shortBreak,
+      longBreak,
+      intervals
+    }));
     openSettings();
   }
 
   return (
     <div className={styles.settings_container}>
-      {console.log(pomodoro, shortBreak, longBreak, intervals)}
       <div className="settings">
         <span>Settings</span>
       </div>

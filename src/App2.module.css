@@ -116,11 +116,11 @@
 }
 
 .controls.actived i:hover {
-  opacity: .6;
+  opacity: .7;
 }
 
 .controls.actived i:active {
-  opacity: .3;
+  opacity: .5;
 }
 
 .controls.actived i {
