@@ -26,7 +26,6 @@ function Settings({
             <span>Pomodoro</span>
             <input
               type="number"
-
               name="pomodoro"
               value={pomodoro}
               placeholder={pomodoro}

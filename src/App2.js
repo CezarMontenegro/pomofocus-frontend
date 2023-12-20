@@ -1,51 +1,37 @@
 //IMPORTS
-
 //hooks
 import { useState, useEffect } from 'react';
-
 //components
 import Header from './components/Header';
 import Settings from './components/Settings';
-
 //styles
 import styles from './App2.module.css';
 
-const pageTypeList = {
-  pomodoro: "pomodoro",
-  shortBreak: "shortBreak",
-  longBreak: "longBreak"
-}
-
-const {pomodoro, shortBreak, longBreak} = pageTypeList;
+//CONSTANTS
+const pomodoro = "pomodoro";
+const shortBreak = "shortBreak";
+const longBreak = "longBreak";
 
 function App() {
-  //states
-
+  //STATES
   // timer states
   const [seconds, setSeconds] = useState(0);
   const [minutes, setMinutes] = useState(0);
-
   //timer start/stop
   const [timerActive, setTimerActive] = useState(false);
-
   // pageType
   const [pageType, setPageType] = useState(pomodoro);
-
   //timerType
   const [pomodoroDuration, setPomodoroDuration] = useState(25);
   const [shortBreakDuration, setShortBreakDuration] = useState(5);
   const [longBreakDuration, setLongBreakDuration] = useState(30);
-
   // intervals qty
   const [pomodoroIntervalsQty, setPomodoroIntervalsQty] = useState(1);
   const [pomodoroIntervalsToLongBreak, setPomodoroIntervalsToLongBreak] = useState(4);
-
-  //setting
+  //settings
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
 
-
   //FUNCTIONS
-
   //switch to set when the timer is running or not
   function playStopTimer() {
     setTimerActive( (prevTimerActive) => !prevTimerActive);
@@ -53,10 +39,11 @@ function App() {
 
   //handles the timers durantions on settings
   function handleTimersDurations(pomodoro, shortBreak, longBreak, pomodoroIntervals) {
-    setPomodoroDuration(pomodoro);
-    setShortBreakDuration(shortBreak);
-    setLongBreakDuration(longBreak);
-    setPomodoroIntervalsToLongBreak(pomodoroIntervals)
+    // setPomodoroDuration(pomodoro);
+    // setShortBreakDuration(shortBreak);
+    // setLongBreakDuration(longBreak);
+    // setPomodoroIntervalsToLongBreak(pomodoroIntervals);
+    localStorage.setItem('pomodoroDuration', pomodoro)
     openSettings();
   }
 
