@@ -1,21 +1,27 @@
 import { useState } from 'react';
 import styles from './Settings.module.css';
 
-function Settings({
-    handleTimerDurations,
-    pomodoroDuration,
-    shortBreakDuration,
-    longBreakDuration,
-    pomodoroIntervalsToLongBreak
-  }) {
+function Settings({ openSettings, timerDurations, setTimerDurations }) {
 
-  const [pomodoro, setPomodoro] = useState(pomodoroDuration);
-  const [shortBreak, setShortBreak] = useState(shortBreakDuration);
-  const [longBreak, setLongBreak] = useState(longBreakDuration);
-  const [intervals, setIntervals] = useState(pomodoroIntervalsToLongBreak);
+  const [pomodoro, setPomodoro] = useState(timerDurations.pomodoro);
+  const [shortBreak, setShortBreak] = useState(timerDurations.shortBreak);
+  const [longBreak, setLongBreak] = useState(timerDurations.longBreak);
+  const [intervals, setIntervals] = useState(timerDurations.intervals);
+
+  function handleSubmit() {
+    setTimerDurations({
+      pomodoro,
+      shortBreak,
+      longBreak,
+      intervals
+    });
+    localStorage.setItem('timer_durations', JSON.stringify(timerDurations));
+    openSettings();
+  }
 
   return (
     <div className={styles.settings_container}>
+      {console.log(pomodoro, shortBreak, longBreak, intervals)}
       <div className="settings">
         <span>Settings</span>
       </div>
@@ -79,7 +85,7 @@ function Settings({
         </label>
       </div>
       <div>
-        <button onClick={() => handleTimerDurations(pomodoro, shortBreak, longBreak, intervals)}>
+        <button onClick={() => handleSubmit(pomodoro, shortBreak, longBreak, intervals)}>
           Save
         </button>
       </div>

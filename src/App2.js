@@ -8,9 +8,9 @@ import Settings from './components/Settings';
 import styles from './App2.module.css';
 
 //CONSTANTS
-const pomodoro = "pomodoro";
-const shortBreak = "shortBreak";
-const longBreak = "longBreak";
+const POMODORO = "pomodoro";
+const SHORT_BREAK = "shortBreak";
+const LONG_BREAK = "longBreak";
 
 function App() {
   //STATES
@@ -20,11 +20,9 @@ function App() {
   //timer start/stop
   const [timerActive, setTimerActive] = useState(false);
   // pageType
-  const [pageType, setPageType] = useState(pomodoro);
+  const [pageType, setPageType] = useState(POMODORO);
   //timerType
-  const [pomodoroDuration, setPomodoroDuration] = useState(25);
-  const [shortBreakDuration, setShortBreakDuration] = useState(5);
-  const [longBreakDuration, setLongBreakDuration] = useState(30);
+  const [timerDurations, setTimerDurations] = useState({})
   // intervals qty
   const [pomodoroIntervalsQty, setPomodoroIntervalsQty] = useState(1);
   const [pomodoroIntervalsToLongBreak, setPomodoroIntervalsToLongBreak] = useState(4);
@@ -37,22 +35,26 @@ function App() {
     setTimerActive( (prevTimerActive) => !prevTimerActive);
   }
 
-  //handles the timers durantions on settings
-  function handleTimersDurations(pomodoro, shortBreak, longBreak, pomodoroIntervals) {
-    // setPomodoroDuration(pomodoro);
-    // setShortBreakDuration(shortBreak);
-    // setLongBreakDuration(longBreak);
-    // setPomodoroIntervalsToLongBreak(pomodoroIntervals);
-    localStorage.setItem('pomodoroDuration', pomodoro)
-    openSettings();
-  }
-
-  //set the correct time on the clock
+  // set the correct time on the clock
   useEffect(() => {
-    if (pageType === pomodoro) setMinutes(pomodoroDuration);
-    if (pageType === shortBreak) setMinutes(shortBreakDuration);
-    if (pageType === longBreak) setMinutes(longBreakDuration);
-  }, [pageType, pomodoroDuration, shortBreakDuration, longBreakDuration]);
+    if (pageType === POMODORO) setMinutes(timerDurations.pomodoro);
+    if (pageType === SHORT_BREAK) setMinutes(timerDurations.shortBreak);
+    if (pageType === LONG_BREAK) setMinutes(timerDurations.longBreak);
+  }, [pageType, timerDurations]);
+
+    //set timerDurations
+    useEffect(() => {
+      if (localStorage.getItem('timer_durations')) {
+        setTimerDurations(JSON.parse(localStorage.getItem('timer_durations')))
+      } else {
+        setTimerDurations({
+          pomodoro: 25,
+          shortBreak: 5,
+          longBreak: 30,
+          intervals: 4
+        })
+      }
+    },[])
 
   //timer logic
   useEffect(() => {
@@ -62,18 +64,18 @@ function App() {
         setMinutes((prevMinutes) => prevMinutes - 1);
       }
 
-      if (minutes === 0 && seconds === 0 && pageType === pomodoro) {
+      if (minutes === 0 && seconds === 0 && pageType === POMODORO) {
         setTimerActive((current) => !current);
         if(pomodoroIntervalsQty % pomodoroIntervalsToLongBreak === 0) {
-          setPageType(longBreak);
+          setPageType(LONG_BREAK);
         } else {
-          setPageType(shortBreak);
+          setPageType(SHORT_BREAK);
         }
       }
 
-      if (minutes === 0 && seconds === 0 && (pageType === shortBreak || pageType === longBreak)) {
+      if (minutes === 0 && seconds === 0 && (pageType === SHORT_BREAK || pageType === LONG_BREAK)) {
         setTimerActive((current) => !current);
-        setPageType(pomodoro);
+        setPageType(POMODORO);
         setPomodoroIntervalsQty((current) => current += 1);
       }
 
@@ -94,23 +96,23 @@ function App() {
 
   return (
     <div className={`${styles.container} ${styles[pageType]}`}>
-      {console.log(pomodoroIntervalsQty, pomodoroIntervalsToLongBreak)}
+      {console.log(timerDurations)}
       <Header openSettings={openSettings}/>
       <div className={styles.timer_container}>
         <div className={styles.timer_header}>
           <button
-            className={`${styles.button} ${pageType === pomodoro ? styles.selected : ""}`}
-            onClick={() => setPageType(pomodoro)}
+            className={`${styles.button} ${pageType === POMODORO ? styles.selected : ""}`}
+            onClick={() => setPageType(POMODORO)}
             >Pomodoro
           </button>
           <button
-            className={`${styles.button} ${pageType === shortBreak ? styles.selected : ""}`}
-            onClick={() => setPageType(shortBreak)}
+            className={`${styles.button} ${pageType === SHORT_BREAK ? styles.selected : ""}`}
+            onClick={() => setPageType(SHORT_BREAK)}
               >Short Break
           </button>
           <button
-            className={`${styles.button} ${pageType === longBreak ? styles.selected : ""}`}
-            onClick={() => setPageType(longBreak)}
+            className={`${styles.button} ${pageType === LONG_BREAK ? styles.selected : ""}`}
+            onClick={() => setPageType(LONG_BREAK)}
             >Long Break
           </button>
         </div>
@@ -125,14 +127,11 @@ function App() {
         <h4>#{pomodoroIntervalsQty}</h4>
         <h3>Time to focus!</h3>
       </div>
-      {isSettingsOpen &&
-        <Settings
-          handleTimerDurations={handleTimersDurations}
-          pomodoroDuration={pomodoroDuration}
-          shortBreakDuration={shortBreakDuration}
-          longBreakDuration={longBreakDuration}
-          pomodoroIntervalsToLongBreak={pomodoroIntervalsToLongBreak}
-        />
+      {isSettingsOpen && <Settings
+        openSettings={openSettings}
+        timerDurations={timerDurations}
+        setTimerDurations={setTimerDurations}
+      />
       }
     </div>
   )
