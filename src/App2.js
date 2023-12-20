@@ -18,7 +18,7 @@ function App() {
   const [seconds, setSeconds] = useState(0);
   const [minutes, setMinutes] = useState(0);
   //timer start/stop
-  const [timerActive, setTimerActive] = useState(false);
+  const [isTimerActive, setIsTimerActive] = useState(false);
   // pageType
   const [pageType, setPageType] = useState(POMODORO);
   //timerType
@@ -32,7 +32,7 @@ function App() {
   //FUNCTIONS
   //switch to set when the timer is running or not
   function playStopTimer() {
-    setTimerActive( (prevTimerActive) => !prevTimerActive);
+    setIsTimerActive( (prevTimerActive) => !prevTimerActive);
   }
 
   // set the correct time on the clock
@@ -58,14 +58,14 @@ function App() {
 
   //timer logic
   useEffect(() => {
-    if (timerActive) {
+    if (isTimerActive) {
       if (seconds < 0) {
         setSeconds(59);
         setMinutes((prevMinutes) => prevMinutes - 1);
       }
 
       if (minutes === 0 && seconds === 0 && pageType === POMODORO) {
-        setTimerActive((current) => !current);
+        setIsTimerActive((current) => !current);
         if(pomodoroIntervalsQty % pomodoroIntervalsToLongBreak === 0) {
           setPageType(LONG_BREAK);
         } else {
@@ -74,7 +74,7 @@ function App() {
       }
 
       if (minutes === 0 && seconds === 0 && (pageType === SHORT_BREAK || pageType === LONG_BREAK)) {
-        setTimerActive((current) => !current);
+        setIsTimerActive((current) => !current);
         setPageType(POMODORO);
         setPomodoroIntervalsQty((current) => current += 1);
       }
@@ -87,7 +87,7 @@ function App() {
       clearInterval(intervalId);
     };
   }
-  }, [timerActive, seconds, minutes]);
+  }, [isTimerActive, seconds, minutes]);
 
   //handles the settings opning
   function openSettings() {
@@ -119,8 +119,9 @@ function App() {
           <div className={styles.timer}>
             <span>{ minutes < 10 ? `0${minutes}` : minutes }</span><span>:</span><span>{ seconds < 10 ? `0${seconds}` : seconds }</span>
           </div>
-          <div className={styles.controls}>
-            <button id="start/pause" onClick={playStopTimer}>{timerActive ? "PAUSE" : "START"}</button>
+          <div className={`${styles.controls} ${isTimerActive ? styles.actived : styles.inactive}`}>
+            <button id="start/pause" onClick={playStopTimer}>{isTimerActive ? "PAUSE" : "START"}</button>
+            <i className='fa-solid fa-forward-step'></i>
         </div>
       </div>
       <div className={styles.interval_container}>
