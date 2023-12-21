@@ -70,7 +70,7 @@
   align-items: center;
 }
 
-.controls.inactive button {
+.controls button {
   cursor: pointer;
   border: none;
   margin: 20px 0px 0px;
@@ -85,33 +85,29 @@
   margin-left: calc(50% - 100px);
 }
 
-.controls.inactive button:active {
+.controls button:active {
   transform: translateY(2px);
 }
 
 .controls.actived button {
-  cursor: pointer;
-  border: none;
-  margin: 20px 0px 0px;
-  padding: 0px 12px;
-  border-radius: 4px;
-  box-shadow: rgb(235, 235, 235) 0px 6px 0px;
-  font-size: 26px;
-  height: 55px;
-  font-weight: bold;
-  width: 200px;
-  background-color: white;
-  margin-left: calc(50% - 100px);
   transform: translateY(2px);
 }
 
-.controls.inactive i {
+.controls i {
   margin-left: calc(((100% - (50% + 100px))/2) - 27px);
   margin-top: 20px;
   color: white;
   font-size: 30px;
+}
+
+.controls.inactive i {
   opacity: 0;
   pointer-events: none;
+  transition: opacity .5s ease;
+}
+
+.controls.actived i {
+  opacity: .9;
   transition: opacity .5s ease;
 }
 
@@ -121,15 +117,6 @@
 
 .controls.actived i:active {
   opacity: .5;
-}
-
-.controls.actived i {
-  margin-left: calc(((100% - (50% + 100px))/2) - 27px);
-  margin-top: 20px;
-  color: white;
-  font-size: 30px;
-  opacity: .9;
-  transition: opacity .5s ease;
 }
 
 .pomodoro .controls button {
@@ -146,7 +133,6 @@
   color: rgb(57, 112, 151);
   transition: color 1s ease;
 }
-
 
 .controls h3 {
   display: inline-block;
