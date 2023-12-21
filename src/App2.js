@@ -33,23 +33,37 @@ function App() {
 
   //FUNCTIONS
 
-  // set the correct pageType
-  function setTimerToPomodoro() {
-    if (pageType === POMODORO) {
-      if (isPomodoroDone === true) {
-        setIsPomodoroDone(false);
-        setPomodoroIntervalsQty((current) => current += 1);
-      }
-      setTimerMinutes(timerDurations.pomodoro);
+  //increments intervals qty when change to pomodoro page
+  function incrementsIntervalsQty() {
+    if (isPomodoroDone === true) {
+      setIsPomodoroDone(false);
+      setPomodoroIntervalsQty((prevPomodoroIntervalsQty) => prevPomodoroIntervalsQty += 1);
     }
   }
 
-  function setTimerToShortBreak() {
-    if (pageType === SHORT_BREAK) setTimerMinutes(timerDurations.shortBreak);
+  //change to pomodoro page
+  function setTimerToPomodoro() {
+    if (pageType === POMODORO) {
+      incrementsIntervalsQty();
+      setTimerMinutes(timerDurations.pomodoro);
+      setDynamicBarLength(timerDurations.pomodoro * 60);
+    }
   }
 
+  //change to shortBreak page
+  function setTimerToShortBreak() {
+    if (pageType === SHORT_BREAK) {
+      setTimerMinutes(timerDurations.shortBreak);
+      setDynamicBarLength(timerDurations.shortBreak * 60);
+    }
+  }
+
+  //change to longBreak page
   function setTimerToLongBreak() {
-    if (pageType === LONG_BREAK) setTimerMinutes(timerDurations.longBreak);
+    if (pageType === LONG_BREAK) {
+      setTimerMinutes(timerDurations.longBreak);
+      setDynamicBarLength(timerDurations.longBreak * 60);
+    }
   }
 
   useEffect(() => {
@@ -61,7 +75,6 @@ function App() {
   }, [pageType, timerDurations]);
 
     //set timerDurations
-
     function setInitialTimerDurations() {
       if (localStorage.getItem('timer_durations')) {
         setTimerDurations(JSON.parse(localStorage.getItem('timer_durations')))
@@ -81,7 +94,7 @@ function App() {
     //transits to shortBreak page when timer is done or when its forced to
     function skipToBreak() {
       if (pageType === POMODORO) {
-        setIsTimerActive((current) => !current);
+        setIsTimerActive((prevTimerActive) => !prevTimerActive);
         if(pomodoroIntervalsQty % timerDurations.intervals === 0) {
           setPageType(LONG_BREAK);
         } else {
@@ -94,16 +107,16 @@ function App() {
     //transits to longBreak page when timer is done or when its forced to
     function skipToPomodoro() {
       if (pageType === SHORT_BREAK || pageType === LONG_BREAK) {
-        setIsTimerActive((current) => !current);
+        setIsTimerActive((prevTimerActive) => !prevTimerActive);
         setPageType(POMODORO);
-        setPomodoroIntervalsQty((current) => current += 1);
+        setPomodoroIntervalsQty((prevPomodoroIntervalsQty) => prevPomodoroIntervalsQty += 1);
         setIsPomodoroDone(false);
       }
     }
 
     //switch to set when the timer is running or not
     function playStopTimer() {
-    setIsTimerActive( (prevTimerActive) => !prevTimerActive);
+    setIsTimerActive((prevTimerActive) => !prevTimerActive);
   }
 
     //forces timer to finish
@@ -126,7 +139,7 @@ function App() {
       }
 
       let intervalId = setInterval(() => {
-        settimerSeconds((prevSegundos) => prevSegundos - 1);
+        settimerSeconds((prevTimerSeconds) => prevTimerSeconds - 1);
       }, 1000);
     
     return () => {
@@ -135,14 +148,9 @@ function App() {
   }
   }, [isTimerActive, timerSeconds, timerMinutes]);
 
-  //set the dynamic bar length
-  useEffect(() => {
-    setDynamicBarLength(timerMinutes * 60);
-  },[pageType]);
-
   //handles the settings opning
   function openSettings() {
-    setIsSettingsOpen((current) => !current);
+    setIsSettingsOpen((prevIsSettingsOpen) => !prevIsSettingsOpen);
   }
 
   function handleResetIntervals() {
