@@ -25,7 +25,6 @@ function App() {
   const [timerDurations, setTimerDurations] = useState({})
   // intervals qty
   const [pomodoroIntervalsQty, setPomodoroIntervalsQty] = useState(1);
-  const [pomodoroIntervalsToLongBreak, setPomodoroIntervalsToLongBreak] = useState(4);
   //settings
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
 
@@ -40,6 +39,8 @@ function App() {
     if (pageType === POMODORO) setMinutes(timerDurations.pomodoro);
     if (pageType === SHORT_BREAK) setMinutes(timerDurations.shortBreak);
     if (pageType === LONG_BREAK) setMinutes(timerDurations.longBreak);
+    setSeconds(0);
+    setIsTimerActive(false);
   }, [pageType, timerDurations]);
 
     //set timerDurations
@@ -56,9 +57,29 @@ function App() {
       }
     },[])
 
+    function transitionToShortBreak() {
+      if (pageType === POMODORO) {
+        setIsTimerActive((current) => !current);
+        if(pomodoroIntervalsQty % timerDurations.intervals === 0) {
+          setPageType(LONG_BREAK);
+        } else {
+          setPageType(SHORT_BREAK);
+        }
+      }
+    }
+
+    function transitionToLongBreak() {
+      if (pageType === SHORT_BREAK || pageType === LONG_BREAK) {
+        setIsTimerActive((current) => !current);
+        setPageType(POMODORO);
+        setPomodoroIntervalsQty((current) => current += 1);
+      }
+    }
+
 
     function handleForward() {
-      
+      transitionToShortBreak();
+      transitionToLongBreak();
     }
 
   //timer logic
@@ -69,19 +90,9 @@ function App() {
         setMinutes((prevMinutes) => prevMinutes - 1);
       }
 
-      if (minutes === 0 && seconds === 0 && pageType === POMODORO) {
-        setIsTimerActive((current) => !current);
-        if(pomodoroIntervalsQty % pomodoroIntervalsToLongBreak === 0) {
-          setPageType(LONG_BREAK);
-        } else {
-          setPageType(SHORT_BREAK);
-        }
-      }
-
-      if (minutes === 0 && seconds === 0 && (pageType === SHORT_BREAK || pageType === LONG_BREAK)) {
-        setIsTimerActive((current) => !current);
-        setPageType(POMODORO);
-        setPomodoroIntervalsQty((current) => current += 1);
+      if (minutes === 0 && seconds === 0) {
+        transitionToShortBreak();
+        transitionToLongBreak();
       }
 
       let intervalId = setInterval(() => {
@@ -126,7 +137,9 @@ function App() {
           </div>
           <div className={`${styles.controls} ${isTimerActive ? styles.actived : styles.inactive}`}>
             <button id="start/pause" onClick={playStopTimer}>{isTimerActive ? "PAUSE" : "START"}</button>
-            <i className='fa-solid fa-forward-step'></i>
+            <i className='fa-solid fa-forward-step'
+              onClick={handleForward}
+            ></i>
         </div>
       </div>
       <div className={styles.interval_container}>
