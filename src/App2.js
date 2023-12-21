@@ -25,18 +25,26 @@ function App() {
   const [timerDurations, setTimerDurations] = useState({})
   // intervals qty
   const [pomodoroIntervalsQty, setPomodoroIntervalsQty] = useState(1);
+  const [isPomodoroDone, setIsPomodoroDone] = useState(false);
   //settings
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
 
   //FUNCTIONS
-  //switch to set when the timer is running or not
-  function playStopTimer() {
-    setIsTimerActive( (prevTimerActive) => !prevTimerActive);
-  }
+
+    //handles the settings opning
+    function openSettings() {
+      setIsSettingsOpen((current) => !current);
+    }
 
   // set the correct time on the clock
   useEffect(() => {
-    if (pageType === POMODORO) setMinutes(timerDurations.pomodoro);
+    if (pageType === POMODORO) {
+      if (isPomodoroDone === true) {
+        setIsPomodoroDone(false);
+        setPomodoroIntervalsQty((current) => current += 1);
+      }
+      setMinutes(timerDurations.pomodoro);
+    }
     if (pageType === SHORT_BREAK) setMinutes(timerDurations.shortBreak);
     if (pageType === LONG_BREAK) setMinutes(timerDurations.longBreak);
     setSeconds(0);
@@ -57,7 +65,8 @@ function App() {
       }
     },[])
 
-    function transitionToShortBreak() {
+    //transits to shortBreak page when timer is done or when its forced to
+    function skipToBreak() {
       if (pageType === POMODORO) {
         setIsTimerActive((current) => !current);
         if(pomodoroIntervalsQty % timerDurations.intervals === 0) {
@@ -66,20 +75,28 @@ function App() {
           setPageType(SHORT_BREAK);
         }
       }
+      setIsPomodoroDone(true);
     }
 
-    function transitionToLongBreak() {
+    //transits to longBreak page when timer is done or when its forced to
+    function skipToPomodoro() {
       if (pageType === SHORT_BREAK || pageType === LONG_BREAK) {
         setIsTimerActive((current) => !current);
         setPageType(POMODORO);
         setPomodoroIntervalsQty((current) => current += 1);
+        setIsPomodoroDone(false);
       }
     }
 
+      //switch to set when the timer is running or not
+  function playStopTimer() {
+    setIsTimerActive( (prevTimerActive) => !prevTimerActive);
+  }
 
-    function handleForward() {
-      transitionToShortBreak();
-      transitionToLongBreak();
+    //forces timer to finish
+    function handleSkipButton() {
+      skipToBreak();
+      skipToPomodoro();
     }
 
   //timer logic
@@ -91,8 +108,8 @@ function App() {
       }
 
       if (minutes === 0 && seconds === 0) {
-        transitionToShortBreak();
-        transitionToLongBreak();
+        skipToBreak();
+        skipToPomodoro();
       }
 
       let intervalId = setInterval(() => {
@@ -105,14 +122,13 @@ function App() {
   }
   }, [isTimerActive, seconds, minutes]);
 
-  //handles the settings opning
-  function openSettings() {
-    setIsSettingsOpen((current) => !current);
+  function handleResetIntervals() {
+    setPomodoroIntervalsQty(1)
   }
 
   return (
     <div className={`${styles.container} ${styles[pageType]}`}>
-      {console.log(timerDurations)}
+      {console.log(isPomodoroDone)}
       <Header openSettings={openSettings}/>
       <div className={styles.timer_container}>
         <div className={styles.timer_header}>
@@ -138,12 +154,12 @@ function App() {
           <div className={`${styles.controls} ${isTimerActive ? styles.actived : styles.inactive}`}>
             <button id="start/pause" onClick={playStopTimer}>{isTimerActive ? "PAUSE" : "START"}</button>
             <i className='fa-solid fa-forward-step'
-              onClick={handleForward}
+              onClick={handleSkipButton}
             ></i>
         </div>
       </div>
       <div className={styles.interval_container}>
-        <h4>#{pomodoroIntervalsQty}</h4>
+        <h4 onClick={handleResetIntervals}>#{pomodoroIntervalsQty}</h4>
         <h3>Time to focus!</h3>
       </div>
       {isSettingsOpen && <Settings
