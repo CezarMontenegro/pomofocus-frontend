@@ -15,8 +15,8 @@ const LONG_BREAK = "longBreak";
 function App() {
   //STATES
   // timer states
-  const [seconds, setSeconds] = useState(0);
-  const [minutes, setMinutes] = useState(0);
+  const [timerSeconds, settimerSeconds] = useState(0);
+  const [timerMinutes, setTimerMinutes] = useState(0);
   //timer start/stop
   const [isTimerActive, setIsTimerActive] = useState(false);
   // pageType
@@ -28,31 +28,41 @@ function App() {
   const [isPomodoroDone, setIsPomodoroDone] = useState(false);
   //settings
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
+  //dinamic Bar
+  const [dynamicBarLength, setDynamicBarLength] = useState(0)
 
   //FUNCTIONS
 
-    //handles the settings opning
-    function openSettings() {
-      setIsSettingsOpen((current) => !current);
-    }
-
-  // set the correct time on the clock
-  useEffect(() => {
+  // set the correct pageType
+  function setTimerToPomodoro() {
     if (pageType === POMODORO) {
       if (isPomodoroDone === true) {
         setIsPomodoroDone(false);
         setPomodoroIntervalsQty((current) => current += 1);
       }
-      setMinutes(timerDurations.pomodoro);
+      setTimerMinutes(timerDurations.pomodoro);
     }
-    if (pageType === SHORT_BREAK) setMinutes(timerDurations.shortBreak);
-    if (pageType === LONG_BREAK) setMinutes(timerDurations.longBreak);
-    setSeconds(0);
+  }
+
+  function setTimerToShortBreak() {
+    if (pageType === SHORT_BREAK) setTimerMinutes(timerDurations.shortBreak);
+  }
+
+  function setTimerToLongBreak() {
+    if (pageType === LONG_BREAK) setTimerMinutes(timerDurations.longBreak);
+  }
+
+  useEffect(() => {
+    setTimerToPomodoro();
+    setTimerToShortBreak();
+    setTimerToLongBreak();    
+    settimerSeconds(0);
     setIsTimerActive(false);
   }, [pageType, timerDurations]);
 
     //set timerDurations
-    useEffect(() => {
+
+    function setInitialTimerDurations() {
       if (localStorage.getItem('timer_durations')) {
         setTimerDurations(JSON.parse(localStorage.getItem('timer_durations')))
       } else {
@@ -63,6 +73,9 @@ function App() {
           intervals: 4
         })
       }
+    }
+    useEffect(() => {
+      setInitialTimerDurations();
     },[])
 
     //transits to shortBreak page when timer is done or when its forced to
@@ -88,8 +101,8 @@ function App() {
       }
     }
 
-      //switch to set when the timer is running or not
-  function playStopTimer() {
+    //switch to set when the timer is running or not
+    function playStopTimer() {
     setIsTimerActive( (prevTimerActive) => !prevTimerActive);
   }
 
@@ -102,25 +115,35 @@ function App() {
   //timer logic
   useEffect(() => {
     if (isTimerActive) {
-      if (seconds < 0) {
-        setSeconds(59);
-        setMinutes((prevMinutes) => prevMinutes - 1);
+      if (timerSeconds < 0) {
+        settimerSeconds(59);
+        setTimerMinutes((prevTimerMinutes) => prevTimerMinutes - 1);
       }
 
-      if (minutes === 0 && seconds === 0) {
+      if (timerMinutes === 0 && timerSeconds === 0) {
         skipToBreak();
         skipToPomodoro();
       }
 
       let intervalId = setInterval(() => {
-        setSeconds((prevSegundos) => prevSegundos - 1);
+        settimerSeconds((prevSegundos) => prevSegundos - 1);
       }, 1000);
     
     return () => {
       clearInterval(intervalId);
     };
   }
-  }, [isTimerActive, seconds, minutes]);
+  }, [isTimerActive, timerSeconds, timerMinutes]);
+
+  //set the dynamic bar length
+  useEffect(() => {
+    setDynamicBarLength(timerMinutes * 60);
+  },[pageType]);
+
+  //handles the settings opning
+  function openSettings() {
+    setIsSettingsOpen((current) => !current);
+  }
 
   function handleResetIntervals() {
     setPomodoroIntervalsQty(1)
@@ -128,7 +151,7 @@ function App() {
 
   return (
     <div className={`${styles.container} ${styles[pageType]}`}>
-      {console.log(isPomodoroDone)}
+      {console.log(timerMinutes, dynamicBarLength)}
       <Header openSettings={openSettings}/>
       <div className={styles.timer_container}>
         <div className={styles.timer_header}>
@@ -149,7 +172,7 @@ function App() {
           </button>
         </div>
           <div className={styles.timer}>
-            <span>{ minutes < 10 ? `0${minutes}` : minutes }</span><span>:</span><span>{ seconds < 10 ? `0${seconds}` : seconds }</span>
+            <span>{ timerMinutes < 10 ? `0${timerMinutes}` : timerMinutes }</span><span>:</span><span>{ timerSeconds < 10 ? `0${timerSeconds}` : timerSeconds }</span>
           </div>
           <div className={`${styles.controls} ${isTimerActive ? styles.actived : styles.inactive}`}>
             <button id="start/pause" onClick={playStopTimer}>{isTimerActive ? "PAUSE" : "START"}</button>
