@@ -42,3 +42,10 @@
   width: 600px;
   background-color: rgba(0,0,0,0.1);
 }
+
+.dynamicBar {
+  background-color: white;
+  height: 3px;
+  border-radius: 10%;
+  opacity: 1;
+}

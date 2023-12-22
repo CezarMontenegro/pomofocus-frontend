@@ -140,7 +140,9 @@ function App() {
   }
 
   function handleResetIntervals() {
-    setPomodoroIntervalsQty(1)
+    const confirmation = window.confirm('Do you want to refresh the pomodoro count?');
+    if (confirmation) setPomodoroIntervalsQty(1)
+    
   }
 
   function findDynamicBarLength() {
@@ -188,10 +190,10 @@ function App() {
         <h3>Time to focus!</h3>
       </div>
       {isSettingsOpen && <Settings
-        openSettings={openSettings}
-        timerDurations={timerDurations}
-        setTimerDurations={setTimerDurations}
-      />
+          openSettings={openSettings}
+          timerDurations={timerDurations}
+          setTimerDurations={setTimerDurations}
+        />
       }
     </div>
   )

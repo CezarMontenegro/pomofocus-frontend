@@ -1,13 +1,6 @@
 import styles from './Header.module.css';
 
 function Header({ openSettings, dynamicBarLength }) {
-  const estiloDoComponente = {
-    backgroundColor: 'white',
-    height: '3px',
-    width: dynamicBarLength,
-    borderRadius: '10%',
-    opacity: '1',
-  };
 
 
 
@@ -23,7 +16,7 @@ function Header({ openSettings, dynamicBarLength }) {
         </button>
       </div>
       <div className={styles.dynamicBar_background}>
-        <div className="border_bottom" style={estiloDoComponente}></div>
+        <div className={styles.dynamicBar} style={{ width: dynamicBarLength }}></div>
       </div>
     </div>
   )
