@@ -1,6 +1,6 @@
 //IMPORTS
 //hooks
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 //components
 import Header from './components/Header';
 import Settings from './components/Settings';
@@ -28,10 +28,12 @@ function App() {
   const [isPomodoroDone, setIsPomodoroDone] = useState(false);
   //settings
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
+  const settingsRef = useRef(null)
   //dinamic Bar
   const [totalSeconds, setTotalSeconds] = useState(0);
   const [dynamicBarLength, setDynamicBarLength] = useState(0);
   const [counter, setCounter] = useState(0);
+
 
   //FUNCTIONS
 
@@ -139,6 +141,10 @@ function App() {
     setIsSettingsOpen((prevIsSettingsOpen) => !prevIsSettingsOpen);
   }
 
+  function handleCloseSettingsByClickingOutside(e) {
+    if (isSettingsOpen && settingsRef.current && !settingsRef.current.contains(e.target)) setIsSettingsOpen(false);
+  }
+
   function handleResetIntervals() {
     const confirmation = window.confirm('Do you want to refresh the pomodoro count?');
     if (confirmation) setPomodoroIntervalsQty(1)
@@ -154,8 +160,7 @@ function App() {
 
 
   return (
-    <div className={`${styles.container} ${styles[pageType]}`}>
-      {console.log(dynamicBarLength)}
+    <div className={`${styles.container} ${styles[pageType]}`} onClick={handleCloseSettingsByClickingOutside}>
       <Header openSettings={openSettings} dynamicBarLength={dynamicBarLength}/>
       <div className={styles.timer_container}>
         <div className={styles.timer_header}>
@@ -193,6 +198,7 @@ function App() {
           openSettings={openSettings}
           timerDurations={timerDurations}
           setTimerDurations={setTimerDurations}
+          settingsRef={settingsRef}
         />
       }
     </div>
