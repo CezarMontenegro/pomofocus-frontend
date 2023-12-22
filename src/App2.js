@@ -15,7 +15,7 @@ const LONG_BREAK = "longBreak";
 function App() {
   //STATES
   // timer states
-  const [timerSeconds, settimerSeconds] = useState(0);
+  const [timerSeconds, setTimerSeconds] = useState(0);
   const [timerMinutes, setTimerMinutes] = useState(0);
   //timer start/stop
   const [isTimerActive, setIsTimerActive] = useState(false);
@@ -29,10 +29,13 @@ function App() {
   //settings
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
   //dinamic Bar
-  const [dynamicBarLength, setDynamicBarLength] = useState(0)
+  const [totalSeconds, setTotalSeconds] = useState(0);
+  const [dynamicBarLength, setDynamicBarLength] = useState(0);
+  const [counter, setCounter] = useState(0);
 
   //FUNCTIONS
-  //set timerDurations
+
+  //set timerDurations when the application is mounted
   function setInitialTimerDurations() {
     if (localStorage.getItem('timer_durations')) {
       setTimerDurations(JSON.parse(localStorage.getItem('timer_durations')))
@@ -44,37 +47,36 @@ function App() {
         intervals: 4
       })
     }
-    console.log('xablau');
   }
   useEffect(() => {
     setInitialTimerDurations();
       },[])
 
-  //increments intervals qty when change to pomodoro page
+  //increments intervalsQty when change to pomodoro page
   function incrementsIntervalsQty() {
     if (isPomodoroDone === true) {
       setIsPomodoroDone(false);
       setPomodoroIntervalsQty((prevPomodoroIntervalsQty) => prevPomodoroIntervalsQty += 1);
     }
   }
-
+  //Set the clock according to the pageType selected
   function setTimer(pageType) {
     if (pageType === POMODORO) {
       incrementsIntervalsQty();
     }
+    setTimerSeconds(0);
     setTimerMinutes(timerDurations[pageType]);
-    setDynamicBarLength(timerDurations[pageType] * 60);
-    settimerSeconds(0);
     setIsTimerActive(false);
+    setTotalSeconds(timerDurations[pageType] * 60);
+    setCounter(0);
   }
-
   useEffect(() => {
     if (Object.keys(timerDurations).length > 0) {
       setTimer(pageType);
     }
   },[timerDurations, pageType]) 
 
-  //transits to shortBreak page when timer is done or when its forced to
+  //transits to Break page when timer is done or when its forced to by clicking on the skipping button
   function skipToBreak() {
     if (pageType === POMODORO) {
       setIsTimerActive((prevTimerActive) => !prevTimerActive);
@@ -87,7 +89,7 @@ function App() {
     setIsPomodoroDone(true);
   }
 
-  //transits to longBreak page when timer is done or when its forced to
+  //transits to pomodoro page when timer is done or when its forced to by clicking on the skipping button
   function skipToPomodoro() {
     if (pageType === SHORT_BREAK || pageType === LONG_BREAK) {
       setIsTimerActive((prevTimerActive) => !prevTimerActive);
@@ -112,7 +114,7 @@ function App() {
   useEffect(() => {
     if (isTimerActive) {
       if (timerSeconds < 0) {
-        settimerSeconds(59);
+        setTimerSeconds(59);
         setTimerMinutes((prevTimerMinutes) => prevTimerMinutes - 1);
       }
 
@@ -122,7 +124,8 @@ function App() {
       }
 
       let intervalId = setInterval(() => {
-        settimerSeconds((prevTimerSeconds) => prevTimerSeconds - 1);
+        setTimerSeconds((prevTimerSeconds) => prevTimerSeconds - 1);
+        setCounter((prevCounter) => (prevCounter + 1));
       }, 1000);
     
     return () => {
@@ -140,10 +143,18 @@ function App() {
     setPomodoroIntervalsQty(1)
   }
 
+  function findDynamicBarLength() {
+    setDynamicBarLength((600 / totalSeconds) * counter);
+  }
+  useEffect(() => {
+    findDynamicBarLength();
+  },[totalSeconds, counter])
+
+
   return (
     <div className={`${styles.container} ${styles[pageType]}`}>
-      {console.log(timerDurations)}
-      <Header openSettings={openSettings}/>
+      {console.log(dynamicBarLength)}
+      <Header openSettings={openSettings} dynamicBarLength={dynamicBarLength}/>
       <div className={styles.timer_container}>
         <div className={styles.timer_header}>
           <button
