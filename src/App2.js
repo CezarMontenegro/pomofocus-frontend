@@ -19,6 +19,8 @@ function App() {
   const [timerMinutes, setTimerMinutes] = useState(0);
   //timer start/stop
   const [isTimerActive, setIsTimerActive] = useState(false);
+  const [autoStartPomodoro, setAutoStartPomodoro] = useState(true);
+  const [autoStartBreaks, setAutoStartBreaks] = useState(true);
   // pageType
   const [pageType, setPageType] = useState(POMODORO);
   //timerType
@@ -61,27 +63,25 @@ function App() {
       setPomodoroIntervalsQty((prevPomodoroIntervalsQty) => prevPomodoroIntervalsQty += 1);
     }
   }
+
   //Set the clock according to the pageType selected
-  function setTimer(pageType) {
+  function setTimer() {
     if (pageType === POMODORO) {
       incrementsIntervalsQty();
     }
     setTimerSeconds(0);
     setTimerMinutes(timerDurations[pageType]);
-    setIsTimerActive(false);
     setTotalSeconds(timerDurations[pageType] * 60);
     setCounter(0);
   }
   useEffect(() => {
-    if (Object.keys(timerDurations).length > 0) {
-      setTimer(pageType);
-    }
+    if (Object.keys(timerDurations).length > 0) setTimer(pageType);
   },[timerDurations, pageType]) 
 
   //transits to Break page when timer is done or when its forced to by clicking on the skipping button
   function skipToBreak() {
     if (pageType === POMODORO) {
-      setIsTimerActive((prevTimerActive) => !prevTimerActive);
+      if (!autoStartBreaks) {setIsTimerActive((prevTimerActive) => !prevTimerActive);}
       if(pomodoroIntervalsQty % timerDurations.intervals === 0) {
         setPageType(LONG_BREAK);
       } else {
@@ -94,17 +94,12 @@ function App() {
   //transits to pomodoro page when timer is done or when its forced to by clicking on the skipping button
   function skipToPomodoro() {
     if (pageType === SHORT_BREAK || pageType === LONG_BREAK) {
-      setIsTimerActive((prevTimerActive) => !prevTimerActive);
+      if (!autoStartPomodoro) {setIsTimerActive((prevTimerActive) => !prevTimerActive)};
       setPageType(POMODORO);
       setPomodoroIntervalsQty((prevPomodoroIntervalsQty) => prevPomodoroIntervalsQty += 1);
       setIsPomodoroDone(false);
     }
   }
-
-  //switch to set when the timer is running or not
-  function playStopTimer() {
-  setIsTimerActive((prevTimerActive) => !prevTimerActive);
-}
 
   //forces timer to finish
   function handleSkipButton() {
@@ -161,22 +156,23 @@ function App() {
 
   return (
     <div className={`${styles.container} ${styles[pageType]}`} onClick={handleCloseSettingsByClickingOutside}>
+      {console.log(isTimerActive)}
       <Header openSettings={openSettings} dynamicBarLength={dynamicBarLength}/>
       <div className={styles.timer_container}>
         <div className={styles.timer_header}>
           <button
             className={`${styles.button} ${pageType === POMODORO ? styles.selected : ""}`}
-            onClick={() => setPageType(POMODORO)}
+            onClick={() => {setPageType(POMODORO); setIsTimerActive(false)}}
             >Pomodoro
           </button>
           <button
             className={`${styles.button} ${pageType === SHORT_BREAK ? styles.selected : ""}`}
-            onClick={() => setPageType(SHORT_BREAK)}
+            onClick={() => {setPageType(SHORT_BREAK); setIsTimerActive(false)}}
               >Short Break
           </button>
           <button
             className={`${styles.button} ${pageType === LONG_BREAK ? styles.selected : ""}`}
-            onClick={() => setPageType(LONG_BREAK)}
+            onClick={() =>{ setPageType(LONG_BREAK); setIsTimerActive(false)}}
             >Long Break
           </button>
         </div>
@@ -184,7 +180,7 @@ function App() {
             <span>{ timerMinutes < 10 ? `0${timerMinutes}` : timerMinutes }</span><span>:</span><span>{ timerSeconds < 10 ? `0${timerSeconds}` : timerSeconds }</span>
           </div>
           <div className={`${styles.controls} ${isTimerActive ? styles.actived : styles.inactive}`}>
-            <button id="start/pause" onClick={playStopTimer}>{isTimerActive ? "PAUSE" : "START"}</button>
+            <button id="start/pause" onClick={() => setIsTimerActive((prev) => !prev)}>{isTimerActive ? "PAUSE" : "START"}</button>
             <i className='fa-solid fa-forward-step'
               onClick={handleSkipButton}
             ></i>
