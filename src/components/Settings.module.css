@@ -59,6 +59,50 @@
   box-sizing: border-box;
 }
 
+.interval_settings {
+  border: 1px solid red;
+  margin-top: 20px;
+  color: rgb(85, 85, 85);
+  font-weight: bold;
+}
+
+.interval_settings_lines {
+  height: 50px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.interval_settings_lines input[type="checkbox"] {
+  width: 60px;
+  height: 32px;
+  appearance: none;
+  background-color:  rgb(204, 204, 204);
+  border-radius: 50px;
+  position: relative;
+  cursor: pointer;
+}
+
+.interval_settings_lines input[type="checkbox"]:before {
+  content: '';
+  position: absolute;
+  left: 2px;
+  top: 2px;
+  width: 28px;
+  height: 28px;
+  border-radius: 50px;
+  background-color: white;
+  box-shadow: rgba(0, 0, 0, 0.3) 0px 1px 1px;
+}
+.interval_settings_lines input:checked[type="checkbox"] {
+  background-color: rgba(132, 199, 51, 0.8);
+}
+
+.interval_settings_lines input:checked[type="checkbox"]:before {
+  left: 30px
+}
+
+
 
 
 

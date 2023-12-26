@@ -73,11 +73,11 @@ function Settings({ openSettings, timerDurations, setTimerDurations, settingsRef
           </div>
         </div>
       </div>
-      <div className="interval_settings">
-        <div>
+      <div className={styles.interval_settings}>
+        <div className={styles.interval_settings_lines}>
           <label htmlFor="Auto Start Breaks">Auto Start Breaks</label>
-          <button
-            // type="number"
+          <input
+            type="checkbox"
             name="Auto Start Breaks"
             // value={intervals}
             // placeholder={intervals}
@@ -87,10 +87,10 @@ function Settings({ openSettings, timerDurations, setTimerDurations, settingsRef
             // }}
           />
         </div>
-        <div>
-          <label htmlFor="Auto Start Pomodoros">Long Break Intervals</label>
-          <button
-            // type="number"
+        <div className={styles.interval_settings_lines}>
+          <label htmlFor="Auto Start Pomodoros">Auto Starts Pomodoro</label>
+          <input
+            type="checkbox"
             name="Auto Start Pomodoros"
             // value={intervals}
             // placeholder={intervals}
@@ -100,7 +100,7 @@ function Settings({ openSettings, timerDurations, setTimerDurations, settingsRef
             // }}
           />
         </div>
-        <div>
+        <div className={styles.interval_settings_lines}>
           <label htmlFor="intervals">Long Break Intervals</label>
           <input
             type="number"
