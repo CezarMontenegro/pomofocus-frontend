@@ -79,12 +79,6 @@ function Settings({ openSettings, timerDurations, setTimerDurations, settingsRef
           <input
             type="checkbox"
             name="Auto Start Breaks"
-            // value={intervals}
-            // placeholder={intervals}
-            // onChange={(e) => {
-            //   const newValue = parseInt(e.target.value, 10);
-            //     setIntervals(newValue < 1 ? 1 : newValue);
-            // }}
           />
         </div>
         <div className={styles.interval_settings_lines}>
@@ -92,12 +86,6 @@ function Settings({ openSettings, timerDurations, setTimerDurations, settingsRef
           <input
             type="checkbox"
             name="Auto Start Pomodoros"
-            // value={intervals}
-            // placeholder={intervals}
-            // onChange={(e) => {
-            //   const newValue = parseInt(e.target.value, 10);
-            //     setIntervals(newValue < 1 ? 1 : newValue);
-            // }}
           />
         </div>
         <div className={styles.interval_settings_lines}>
@@ -114,7 +102,7 @@ function Settings({ openSettings, timerDurations, setTimerDurations, settingsRef
           />
         </div>
       </div>
-      <div>
+      <div className={styles.settings_footer}>
         <button onClick={() => handleSubmit(pomodoro, shortBreak, longBreak, intervals)}>
           Save
         </button>
