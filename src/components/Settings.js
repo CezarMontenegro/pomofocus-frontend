@@ -74,8 +74,34 @@ function Settings({ openSettings, timerDurations, setTimerDurations, settingsRef
         </div>
       </div>
       <div className="interval_settings">
-        <label>
-          <span>Long Break Intervals</span>
+        <div>
+          <label htmlFor="Auto Start Breaks">Auto Start Breaks</label>
+          <button
+            // type="number"
+            name="Auto Start Breaks"
+            // value={intervals}
+            // placeholder={intervals}
+            // onChange={(e) => {
+            //   const newValue = parseInt(e.target.value, 10);
+            //     setIntervals(newValue < 1 ? 1 : newValue);
+            // }}
+          />
+        </div>
+        <div>
+          <label htmlFor="Auto Start Pomodoros">Long Break Intervals</label>
+          <button
+            // type="number"
+            name="Auto Start Pomodoros"
+            // value={intervals}
+            // placeholder={intervals}
+            // onChange={(e) => {
+            //   const newValue = parseInt(e.target.value, 10);
+            //     setIntervals(newValue < 1 ? 1 : newValue);
+            // }}
+          />
+        </div>
+        <div>
+          <label htmlFor="intervals">Long Break Intervals</label>
           <input
             type="number"
             name="intervals"
@@ -86,7 +112,7 @@ function Settings({ openSettings, timerDurations, setTimerDurations, settingsRef
                 setIntervals(newValue < 1 ? 1 : newValue);
             }}
           />
-        </label>
+        </div>
       </div>
       <div>
         <button onClick={() => handleSubmit(pomodoro, shortBreak, longBreak, intervals)}>

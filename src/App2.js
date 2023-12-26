@@ -137,7 +137,7 @@ function App() {
   }
 
   function handleCloseSettingsByClickingOutside(e) {
-    if (isSettingsOpen && settingsRef.current && !settingsRef.current.contains(e.target)) setIsSettingsOpen(false);
+    if (isSettingsOpen && !settingsRef.current.contains(e.target)) setIsSettingsOpen(false);
   }
 
   function handleResetIntervals() {
