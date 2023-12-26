@@ -19,8 +19,8 @@ function App() {
   const [timerMinutes, setTimerMinutes] = useState(0);
   //timer start/stop
   const [isTimerActive, setIsTimerActive] = useState(false);
-  const [autoStartPomodoro, setAutoStartPomodoro] = useState(true);
-  const [autoStartBreaks, setAutoStartBreaks] = useState(true);
+  const [autoStartPomodoro, setAutoStartPomodoro] = useState(false);
+  const [autoStartBreaks, setAutoStartBreaks] = useState(false);
   // pageType
   const [pageType, setPageType] = useState(POMODORO);
   //timerType
@@ -81,8 +81,8 @@ function App() {
   //transits to Break page when timer is done or when its forced to by clicking on the skipping button
   function skipToBreak() {
     if (pageType === POMODORO) {
-      if (!autoStartBreaks) {setIsTimerActive((prevTimerActive) => !prevTimerActive);}
-      if(pomodoroIntervalsQty % timerDurations.intervals === 0) {
+      if (!autoStartBreaks) setIsTimerActive((prevTimerActive) => !prevTimerActive);
+      if (pomodoroIntervalsQty % timerDurations.intervals === 0) {
         setPageType(LONG_BREAK);
       } else {
         setPageType(SHORT_BREAK);
@@ -154,9 +154,10 @@ function App() {
   },[totalSeconds, counter])
 
 
+
+
   return (
     <div className={`${styles.container} ${styles[pageType]}`} onClick={handleCloseSettingsByClickingOutside}>
-      {console.log(isTimerActive)}
       <Header openSettings={openSettings} dynamicBarLength={dynamicBarLength}/>
       <div className={styles.timer_container}>
         <div className={styles.timer_header}>
@@ -195,6 +196,10 @@ function App() {
           timerDurations={timerDurations}
           setTimerDurations={setTimerDurations}
           settingsRef={settingsRef}
+          autoStartBreaks={autoStartBreaks}
+          setAutoStartBreaks={setAutoStartBreaks}
+          autoStartPomodoro={autoStartPomodoro}
+          setAutoStartPomodoro={setAutoStartPomodoro}
         />
       }
     </div>

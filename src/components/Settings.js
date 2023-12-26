@@ -1,7 +1,16 @@
 import { useState } from 'react';
 import styles from './Settings.module.css';
 
-function Settings({ openSettings, timerDurations, setTimerDurations, settingsRef }) {
+function Settings({
+    openSettings,
+    timerDurations,
+    setTimerDurations,
+    settingsRef,
+    autoStartBreaks,
+    setAutoStartBreaks,
+    autoStartPomodoro,
+    setAutoStartPomodoro
+  }) {
 
   const [pomodoro, setPomodoro] = useState(timerDurations.pomodoro);
   const [shortBreak, setShortBreak] = useState(timerDurations.shortBreak);
@@ -79,6 +88,8 @@ function Settings({ openSettings, timerDurations, setTimerDurations, settingsRef
           <input
             type="checkbox"
             name="Auto Start Breaks"
+            checked={autoStartBreaks}
+            onClick={() => setAutoStartBreaks((prev) => !prev)}
           />
         </div>
         <div className={styles.interval_settings_lines}>
@@ -86,6 +97,8 @@ function Settings({ openSettings, timerDurations, setTimerDurations, settingsRef
           <input
             type="checkbox"
             name="Auto Start Pomodoros"
+            checked={autoStartPomodoro}
+            onClick={() => setAutoStartPomodoro((prev) => !prev)}
           />
         </div>
         <div className={styles.interval_settings_lines}>
