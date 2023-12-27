@@ -1,0 +1,15 @@
+{
+  "files": {
+    "main.css": "/pomofocus-frontend/static/css/main.0c0dd6e7.css",
+    "main.js": "/pomofocus-frontend/static/js/main.a99d0f03.js",
+    "static/js/787.a5cad257.chunk.js": "/pomofocus-frontend/static/js/787.a5cad257.chunk.js",
+    "index.html": "/pomofocus-frontend/index.html",
+    "main.0c0dd6e7.css.map": "/pomofocus-frontend/static/css/main.0c0dd6e7.css.map",
+    "main.a99d0f03.js.map": "/pomofocus-frontend/static/js/main.a99d0f03.js.map",
+    "787.a5cad257.chunk.js.map": "/pomofocus-frontend/static/js/787.a5cad257.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.0c0dd6e7.css",
+    "static/js/main.a99d0f03.js"
+  ]
+}
