@@ -163,11 +163,14 @@ function App() {
     findDynamicBarLength();
   },[totalSeconds, counterSeconds])
 
-  useEffect(() => {
+  function setDynamicTitle() {
     document.title = `${timerMinutes < 10 ? `0${timerMinutes}` : timerMinutes}:${ timerSeconds < 10 ? `0${timerSeconds}` : timerSeconds } - ${currentTask}`
-    const favicon = document.getElementById('favicon')
-    favicon.href = "/pomofocus-frontend/pomodoro.png"
-  },[timerSeconds, timerMinutes, currentTask])
+    const favicon = document.getElementById('favicon');
+    favicon.href = `/pomofocus-frontend/${pageType}.png`
+  }
+  useEffect(() => {
+    setDynamicTitle();
+  },[timerSeconds, timerMinutes, currentTask, pageType])
 
 
   return (
