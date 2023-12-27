@@ -50,7 +50,7 @@ function Settings({
               placeholder={pomodoro}
               onChange={(e) => {
                 const newValue = parseInt(e.target.value, 10);
-                setPomodoro(newValue < 0 ? 0 : newValue);
+                setPomodoro(newValue < 1 ? 1 : newValue);
               }}
             />
           </div>
@@ -63,7 +63,7 @@ function Settings({
               placeholder={shortBreak}
               onChange={(e) => {
                 const newValue = parseInt(e.target.value, 10);
-                setShortBreak(newValue < 0 ? 0 : newValue);
+                setShortBreak(newValue < 1 ? 1 : newValue);
               }}
             />
           </div>
@@ -76,7 +76,7 @@ function Settings({
               placeholder={longBreak}
               onChange={(e) => {
                 const newValue = parseInt(e.target.value, 10);
-                setLongBreak(newValue < 0 ? 0 : newValue);
+                setLongBreak(newValue < 1 ? 1 : newValue);
               }}
             />
           </div>
