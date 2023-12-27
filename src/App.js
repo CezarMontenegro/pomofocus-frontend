@@ -165,7 +165,9 @@ function App() {
 
   useEffect(() => {
     document.title = `${timerMinutes < 10 ? `0${timerMinutes}` : timerMinutes}:${ timerSeconds < 10 ? `0${timerSeconds}` : timerSeconds } - ${currentTask}`
-  },[timerSeconds, timerMinutes, pageType, timerDurations])
+    const favicon = document.getElementById('favicon')
+    favicon.href = "/pomofocus-frontend/pomodoro.png"
+  },[timerSeconds, timerMinutes, currentTask])
 
 
   return (
