@@ -5,12 +5,17 @@ import { useState, useEffect, useRef } from 'react';
 import Header from './components/Header';
 import Settings from './components/Settings';
 //styles
-import styles from './App2.module.css';
+import styles from './App.module.css';
 
 //CONSTANTS
 const POMODORO = "pomodoro";
 const SHORT_BREAK = "shortBreak";
 const LONG_BREAK = "longBreak";
+
+const CURRENT_TASK_OBJ = {
+  pomodoro: "Time to focus!",
+  break: "Time for a break!"
+}
 
 function App() {
   //STATES
@@ -34,8 +39,9 @@ function App() {
   //dinamic Bar
   const [totalSeconds, setTotalSeconds] = useState(0);
   const [dynamicBarLength, setDynamicBarLength] = useState(0);
-  const [counter, setCounter] = useState(0);
-
+  const [counterSeconds, setCounterSeconds] = useState(0);
+  //current task
+  const [currentTask, setCurrentTask] = useState('');
 
   //FUNCTIONS
 
@@ -64,18 +70,22 @@ function App() {
     }
   }
 
-  //Set the clock according to the pageType selected
-  function setTimer() {
+  //Set the page features according to the pageType selected
+  function setPageFeatures() {
     if (pageType === POMODORO) {
       incrementsIntervalsQty();
     }
+    //related to timer
     setTimerSeconds(0);
     setTimerMinutes(timerDurations[pageType]);
+    //related to dynamicBar
     setTotalSeconds(timerDurations[pageType] * 60);
-    setCounter(0);
+    setCounterSeconds(0);
+    //related to dynamicTitle
+    pageType === POMODORO ? setCurrentTask(CURRENT_TASK_OBJ.pomodoro) : setCurrentTask(CURRENT_TASK_OBJ.break) 
   }
   useEffect(() => {
-    if (Object.keys(timerDurations).length > 0) setTimer(pageType);
+    if (Object.keys(timerDurations).length > 0) {setPageFeatures(pageType)}
   },[timerDurations, pageType]) 
 
   //transits to Break page when timer is done or when its forced to by clicking on the skipping button
@@ -122,7 +132,7 @@ function App() {
 
       let intervalId = setInterval(() => {
         setTimerSeconds((prevTimerSeconds) => prevTimerSeconds - 1);
-        setCounter((prevCounter) => (prevCounter + 1));
+        setCounterSeconds((prevCounter) => (prevCounter + 1));
       }, 1000);
     
     return () => {
@@ -131,7 +141,7 @@ function App() {
   }
   }, [isTimerActive, timerSeconds, timerMinutes]);
 
-  //handles the settings opning
+  //handles the settings opening
   function openSettings() {
     setIsSettingsOpen((prevIsSettingsOpen) => !prevIsSettingsOpen);
   }
@@ -147,13 +157,15 @@ function App() {
   }
 
   function findDynamicBarLength() {
-    setDynamicBarLength((600 / totalSeconds) * counter);
+    setDynamicBarLength((600 / totalSeconds) * counterSeconds);
   }
   useEffect(() => {
     findDynamicBarLength();
-  },[totalSeconds, counter])
+  },[totalSeconds, counterSeconds])
 
-
+  useEffect(() => {
+    document.title = `${timerMinutes < 10 ? `0${timerMinutes}` : timerMinutes}:${ timerSeconds < 10 ? `0${timerSeconds}` : timerSeconds } - ${currentTask}`
+  },[timerSeconds, timerMinutes, pageType, timerDurations])
 
 
   return (
@@ -189,7 +201,7 @@ function App() {
       </div>
       <div className={styles.interval_container}>
         <h4 onClick={handleResetIntervals}>#{pomodoroIntervalsQty}</h4>
-        <h3>Time to focus!</h3>
+        <h3>{currentTask}</h3>
       </div>
       {isSettingsOpen && <Settings
           openSettings={openSettings}
