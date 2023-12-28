@@ -70,19 +70,26 @@ function App() {
     }
   }
 
-  //Set the page features according to the pageType selected
-  function setPageFeatures() {
-    if (pageType === POMODORO) {
-      incrementsIntervalsQty();
-    }
-    //related to timer
+  function setTimer() {
     setTimerSeconds(0);
     setTimerMinutes(timerDurations[pageType]);
-    //related to dynamicBar
+  }
+
+  function setDynamicBar() {
     setTotalSeconds(timerDurations[pageType] * 60);
     setCounterSeconds(0);
-    //related to dynamicTitle
-    pageType === POMODORO ? setCurrentTask(CURRENT_TASK_OBJ.pomodoro) : setCurrentTask(CURRENT_TASK_OBJ.break) 
+  }
+
+  function setDynamicTask() {
+    pageType === POMODORO ? setCurrentTask(CURRENT_TASK_OBJ.pomodoro) : setCurrentTask(CURRENT_TASK_OBJ.break);
+  }
+
+  //Set the page features according to the pageType selected
+  function setPageFeatures() {
+    if (pageType === POMODORO) { incrementsIntervalsQty() }
+    setTimer();
+    setDynamicBar();
+    setDynamicTask();
   }
   useEffect(() => {
     if (Object.keys(timerDurations).length > 0) {setPageFeatures(pageType)}
@@ -92,11 +99,7 @@ function App() {
   function skipToBreak() {
     if (pageType === POMODORO) {
       if (!autoStartBreaks) setIsTimerActive((prevTimerActive) => !prevTimerActive);
-      if (pomodoroIntervalsQty % timerDurations.intervals === 0) {
-        setPageType(LONG_BREAK);
-      } else {
-        setPageType(SHORT_BREAK);
-      }
+      pomodoroIntervalsQty % timerDurations.intervals === 0 ? setPageType(LONG_BREAK) : setPageType(SHORT_BREAK)
     }
     setIsPomodoroDone(true);
   }
