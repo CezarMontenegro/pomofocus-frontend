@@ -16,6 +16,7 @@
 
 .header_controls {
   display: inline-block;
+  float: right;
 }
 
 .header_controls button {

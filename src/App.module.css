@@ -23,7 +23,7 @@
   background-color: rgba(255, 255, 255, .1);
   width: 500px;
   height: 300px;
-  top: 15%;
+  top: 125px;
   left: calc(50% - 250px);
   border-radius: 6px;
   padding: 20px 0px 30px;
@@ -141,7 +141,8 @@
 .interval_container {
   position: absolute;
   left: calc(50% - 250px);
-  top: 60%;
+  /* top: 60%; */
+  top: 500px;
   width: 500px;
   height: 60px;
   text-align: center;
@@ -184,6 +185,10 @@
   .interval_container {
     width: 300px;
     left: calc(50% - 150px);
+  }
+
+  .controls i {
+    margin-left: calc(((100% - (50% + 100px))/2) - 8px);
   }
 }
 

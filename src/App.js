@@ -160,7 +160,11 @@ function App() {
   }
 
   function findDynamicBarLength() {
+    const screenWidth = window.innerWidth;
     setDynamicBarLength((600 / totalSeconds) * counterSeconds);
+    if (screenWidth <= 500) { setDynamicBarLength((400 / totalSeconds) * counterSeconds) }
+    if (screenWidth <= 400) { setDynamicBarLength((350 / totalSeconds) * counterSeconds) }
+    if (screenWidth <= 350) { setDynamicBarLength((300 / totalSeconds) * counterSeconds) }
   }
   useEffect(() => {
     findDynamicBarLength();
