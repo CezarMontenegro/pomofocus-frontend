@@ -2,8 +2,8 @@
 //hooks
 import { useState, useEffect, useRef } from 'react';
 //components
-import Header from './components/Header';
-import Settings from './components/Settings';
+import Header from '../components/Header/Header';
+import Settings from '../components/Settings/Settings';
 //styles
 import styles from './App.module.css';
 
