@@ -2,7 +2,9 @@ import styles from './Header.module.css';
 
 function Header({ openSettings, dynamicBarLength }) {
 
-
+  function testDynamicBarLength() {
+    if (dynamicBarLength) { return ({ width: dynamicBarLength })}
+  }
 
   return (
     <div className={styles.header}>
@@ -16,7 +18,7 @@ function Header({ openSettings, dynamicBarLength }) {
         </button>
       </div>
       <div className={styles.dynamicBar_background}>
-        <div className={styles.dynamicBar} style={{ width: dynamicBarLength }}></div>
+        <div className={styles.dynamicBar} style={testDynamicBarLength()}></div>
       </div>
     </div>
   )

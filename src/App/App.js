@@ -173,7 +173,9 @@ function App() {
   function setDynamicTitle() {
     document.title = `${timerMinutes < 10 ? `0${timerMinutes}` : timerMinutes}:${ timerSeconds < 10 ? `0${timerSeconds}` : timerSeconds } - ${currentTask}`
     const favicon = document.getElementById('favicon');
-    favicon.href = `/pomofocus-frontend/${pageType}.png`
+    if (favicon) {
+      favicon.href = `/pomofocus-frontend/${pageType}.png`;
+    }
   }
   useEffect(() => {
     setDynamicTitle();
@@ -181,7 +183,7 @@ function App() {
 
 
   return (
-    <div className={`${styles.container} ${styles[pageType]}`} onClick={handleCloseSettingsByClickingOutside}>
+    <div className={`${styles.container} ${styles[pageType]}`} onClick={handleCloseSettingsByClickingOutside} data-testid="app-container">
       <Header openSettings={openSettings} dynamicBarLength={dynamicBarLength}/>
       <div className={styles.timer_container}>
         <div className={styles.timer_header}>
