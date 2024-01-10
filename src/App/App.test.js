@@ -23,7 +23,7 @@ describe("App Component", () => {
 
     it("should stop the timer when clicked", () => {
       render(<App />);
-
+      const setIsTimerActiveMock = jest.spyOn(global, 'setIsTimerActive');
       const pomodoroBtn = screen.getByText("Pomodoro");
       fireEvent.click(pomodoroBtn);
       expect(setIsTimerActiveMock).toHaveBeenCalled()
