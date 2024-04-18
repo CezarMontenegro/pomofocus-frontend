@@ -34,7 +34,7 @@ function Settings({
   }
 
   return (
-    <div className={styles.settings_container} ref={settingsRef}>
+    <div className={styles.settings_container} ref={settingsRef} data-testid="Settings-container">
       <div className={styles.title}>
         <span>Settings</span>
       </div>

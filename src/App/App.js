@@ -138,10 +138,10 @@ function App() {
         setCounterSeconds((prevCounter) => (prevCounter + 1));
       }, 1000);
     
-    return () => {
-      clearInterval(intervalId);
-    };
-  }
+      return () => {
+        clearInterval(intervalId);
+      };
+    }
   }, [isTimerActive, timerSeconds, timerMinutes]);
 
   //handles the settings opening
