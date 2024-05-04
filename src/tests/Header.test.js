@@ -22,10 +22,7 @@ describe('Header', () => {
     const settings = screen.getByText('Settings');
 
     fireEvent.click(settings);
-
+    
     expect(mockedOpenSettings).toHaveBeenCalled();
   })
-
-
-
 })

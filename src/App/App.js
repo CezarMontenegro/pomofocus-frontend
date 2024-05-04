@@ -181,7 +181,6 @@ function App() {
     setDynamicTitle();
   },[timerSeconds, timerMinutes, currentTask, pageType])
 
-
   return (
     <div className={`${styles.container} ${styles[pageType]}`} onClick={handleCloseSettingsByClickingOutside} data-testid="app-container">
       <Header openSettings={openSettings} dynamicBarLength={dynamicBarLength}/>
@@ -206,7 +205,7 @@ function App() {
           <div className={styles.timer}>
             <span>{ timerMinutes < 10 ? `0${timerMinutes}` : timerMinutes }</span><span>:</span><span>{ timerSeconds < 10 ? `0${timerSeconds}` : timerSeconds }</span>
           </div>
-          <div className={`${styles.controls} ${isTimerActive ? styles.actived : styles.inactive}`}>
+          <div className={`${styles.controls}`}>
             <button id="start/pause" onClick={() => setIsTimerActive((prev) => !prev)}>{isTimerActive ? "PAUSE" : "START"}</button>
             <i className='fa-solid fa-forward-step'
               onClick={handleSkipButton}

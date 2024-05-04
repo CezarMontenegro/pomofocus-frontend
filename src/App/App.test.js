@@ -3,8 +3,6 @@ import { render, screen, fireEvent } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import App from './App';
 
-
-
 describe("App Component", () => {
   describe("Pomodoro btn", () => {
     it("should be in the document", () => {
@@ -21,14 +19,11 @@ describe("App Component", () => {
       expect(appContainer).toHaveClass("container pomodoro")
     })
 
-    // it("should stop the timer when clicked", () => {
-    //   render(<App />);
-    //   const setIsTimerActiveMock = jest.fn();
-    //   const pomodoroBtn = screen.getByText("Pomodoro");
-    //   fireEvent.click(pomodoroBtn);
-    //   console.log(setIsTimerActiveMock.mock)
-    //   expect(setIsTimerActiveMock).toHaveBeenCalled();
+    it("should stop the timer when clicked", () => {
+      render(<App />)
+      const pomodoroBtn = screen.getByText("Pomodoro");
       
-    // })
+      fireEvent.click(pomodoroBtn);
+    })
   })
 })
